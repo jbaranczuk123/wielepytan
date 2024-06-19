@@ -87,9 +87,7 @@ function mousePressed() {
   }
   yPosition += 30; // Adjust for the added space between the question and buttons
   for (let i = 0; i < buttons.length; i++) {
-    let w = textWidth(buttons[i]) + 40;
-    if (mouseX > width / 2 - w / 2 && mouseX < width / 2 + w / 2 &&
-        mouseY > yPosition + i * 100 - 30 && mouseY < yPosition + i * 100 + 30) {
+    if (isMouseOverButton(width / 2, yPosition + i * 100, buttons[i])) {
       if (buttons[i] === "YES") {
         currentScreen++;
         if (currentScreen >= questions.length) {
@@ -109,7 +107,6 @@ function splitTextToLines(text, maxWidth, textSize) {
   let words = text.split(' ');
   let lines = [];
   let currentLine = words[0];
-
 
   for (let i = 1; i < words.length; i++) {
     let word = words[i];
