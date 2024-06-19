@@ -2,6 +2,7 @@ let currentScreen = 0;
 let noPressed = false;
 let hearts = [];
 let confetti = [];
+let hoverIndex = -1;
 
 let questions = [
   { text: "Do you want to cancel your subscription?", buttons: ["YES", "NO"] },
@@ -50,20 +51,30 @@ function draw() {
     yPosition += 30; // Add space between the question and the buttons
 
     let buttons = questions[currentScreen].buttons;
+    hoverIndex = -1; // Reset hoverIndex before checking
     for (let i = 0; i < buttons.length; i++) {
-      drawButton(buttons[i], width / 2, yPosition + i * 100);
+      if (isMouseOverButton(width / 2, yPosition + i * 100, buttons[i])) {
+        hoverIndex = i;
+      }
+      drawButton(buttons[i], width / 2, yPosition + i * 100, hoverIndex === i);
     }
   }
 }
 
-function drawButton(label, x, y) {
-  fill(135, 55, 255); // Purple color
+function drawButton(label, x, y, isHovered) {
+  fill(isHovered ? color(180, 125, 255) : color(135, 55, 255)); // Lighter purple on hover
   noStroke();
   let w = textWidth(label) + 40; // Add padding
   let h = 60;
   rect(x - w / 2, y - h / 2, w, h, 20);
   fill(0);
   text(label, x, y);
+}
+
+function isMouseOverButton(x, y, label) {
+  let w = textWidth(label) + 40;
+  let h = 60;
+  return mouseX > x - w / 2 && mouseX < x + w / 2 && mouseY > y - h / 2 && mouseY < y + h / 2;
 }
 
 function mousePressed() {
@@ -98,7 +109,6 @@ function splitTextToLines(text, maxWidth, textSize) {
   let words = text.split(' ');
   let lines = [];
   let currentLine = words[0];
-
 
 
   for (let i = 1; i < words.length; i++) {
