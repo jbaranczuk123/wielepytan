@@ -79,14 +79,17 @@ function mousePressed() {
     let w = textWidth(buttons[i]) + 40;
     if (mouseX > width / 2 - w / 2 && mouseX < width / 2 + w / 2 &&
         mouseY > yPosition + i * 100 - 30 && mouseY < yPosition + i * 100 + 30) {
-      if (buttons[i] === "YES" || buttons[i] === "GO TO THE NEXT STEP") {
+      if (buttons[i] === "YES") {
         currentScreen++;
         if (currentScreen >= questions.length) {
           currentScreen = 0;
         }
       } else if (buttons[i] === "NO") {
         noPressed = true;
+      } else if (buttons[i] === "GO TO THE NEXT STEP") {
+        window.location.href = "https://kubi-githubiczny.github.io/CreativeCoidng/";
       }
+      break; // Exit the loop after handling the button click
     }
   }
 }
@@ -95,6 +98,7 @@ function splitTextToLines(text, maxWidth, textSize) {
   let words = text.split(' ');
   let lines = [];
   let currentLine = words[0];
+
 
 
   for (let i = 1; i < words.length; i++) {
