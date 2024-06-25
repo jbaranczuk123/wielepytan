@@ -3,6 +3,7 @@ let noPressed = false;
 let hearts = [];
 let confetti = [];
 let hoverIndex = -1;
+let img;
 
 let questions = [
   { text: "Do you want to cancel your subscription?", buttons: ["YES", "NO"] },
@@ -11,6 +12,10 @@ let questions = [
   { text: "Are you sure?", buttons: ["YES", "NO"], image: true, subtext: "Are you sure you want to do that to them?" },
   { text: "You don't have a heart but it's okay...", buttons: ["GO TO THE NEXT STEP"] }
 ];
+
+function preload() {
+  img = loadImage('https://t3.ftcdn.net/jpg/03/00/25/68/360_F_300256880_Nx83QV4r3cgKrS4XKy2cDRLNXbe62RnF.jpg');
+}
 
 function setup() {
   createCanvas(1920, 1080);
@@ -40,9 +45,15 @@ function draw() {
     }
 
     if (questions[currentScreen].image) {
-      fill(200);
-      rect(width / 2 - width * 0.25, yPosition - 300, width * 0.5, height * 0.35); // Placeholder for image
-      yPosition += height * 0.35 + 50; // Add space for the placeholder image
+      let buttonDistance = 100; // Distance between buttons
+      let imgWidth = width * 0.5;
+      let imgHeight = img.height * (imgWidth / img.width); // Maintain aspect ratio
+      let imgX = width / 2 - imgWidth / 2;
+      let imgY = buttonDistance; // Place image one button distance lower from the top
+
+      image(img, imgX, imgY, imgWidth, imgHeight); // Display the image
+
+      yPosition = imgY + imgHeight + buttonDistance; // Move text closer to the image
       fill(0);
       text(questions[currentScreen].subtext, width / 2, yPosition);
       yPosition += 50;
@@ -81,11 +92,29 @@ function mousePressed() {
   if (noPressed) return;
 
   let buttons = questions[currentScreen].buttons;
-  let yPosition = (height / 2) - 50;
-  if (questions[currentScreen].image) {
-    yPosition += height * 0.35 + 100; // Adjust for the image and subtext
+
+  let question = questions[currentScreen].text;
+  let lines = splitTextToLines(question, width * 0.5, 32);
+  let totalTextHeight = lines.length * 38; // lineHeight is 32 + 6 for margin
+
+  let yPosition = (height / 2) - (totalTextHeight / 2) - 100;
+  for (let line of lines) {
+    yPosition += 38;
   }
-  yPosition += 30; // Adjust for the added space between the question and buttons
+
+  if (questions[currentScreen].image) {
+    let buttonDistance = 100; // Distance between buttons
+    let imgWidth = width * 0.5;
+    let imgHeight = img.height * (imgWidth / img.width); // Maintain aspect ratio
+    let imgX = width / 2 - imgWidth / 2;
+    let imgY = buttonDistance; // Place image one button distance lower from the top
+
+    yPosition = imgY + imgHeight + buttonDistance; // Move text closer to the image
+    yPosition += 50; // Adjust for the subtext
+  }
+
+  yPosition += 30; // Add space between the question and the buttons
+
   for (let i = 0; i < buttons.length; i++) {
     if (isMouseOverButton(width / 2, yPosition + i * 100, buttons[i])) {
       if (buttons[i] === "YES") {
