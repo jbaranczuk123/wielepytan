@@ -6,7 +6,7 @@ let hoverIndex = -1;
 let img;
 
 let questions = [
-  { text: "Do you want to cancel your subscription?", buttons: ["YES", "NO"] },
+  { text: "But do you realy want to cancel your subscription?", buttons: ["YES", "NO"] },
   { text: "Are you sure you want to do that? :((", buttons: ["YES", "NO"] },
   { text: "Are you sure you want to leave us even though your subscription buys 3 meals each month for hungry children in Ghana?", buttons: ["YES", "NO"] },
   { text: "Are you sure?", buttons: ["YES", "NO"], image: true, subtext: "Are you sure you want to do that to them?" },
